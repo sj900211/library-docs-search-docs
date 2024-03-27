@@ -12,6 +12,12 @@ java {
   sourceCompatibility = '17'
 }
 
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
 repositories {
   maven {
     url "https://:${githubPackageRead}@maven.pkg.github.com/${githubOwner}/*"
