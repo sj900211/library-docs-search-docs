@@ -30,6 +30,7 @@ import org.springframework.javapoet.JavaFile;
 import org.springframework.javapoet.TypeSpec;
 import run.freshr.common.annotations.SearchClass;
 import run.freshr.common.annotations.SearchComment;
+import run.freshr.common.data.SearchData;
 import run.freshr.common.data.SearchDocsData;
 import run.freshr.common.data.SearchDocsData.SearchDocsDataBuilder;
 
@@ -139,7 +140,7 @@ public class SearchDocsProcessor extends AbstractProcessor {
          * 필드 스펙 정의
          */
         List<FieldSpec> fieldSpecList = distinctFieldList.stream()
-            .map(item -> FieldSpec.builder(SearchDocsData.class, item.getField())
+            .map(item -> FieldSpec.builder(SearchData.class, item.getField())
                 .addModifiers(PUBLIC, STATIC, FINAL)
                 .initializer(
                     "SearchData.builder()"

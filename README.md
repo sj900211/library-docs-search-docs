@@ -1,4 +1,4 @@
-# Library > Docs >Search Docs
+# Library > Docs > Search Docs
 > VO 객체의 설명을 작성하기 위한 Module  
 > RestDocs 기능을 사용하여 테스트 코드를 작성할 때 QueryParameter 의 내용은 Entity 를 기반으로 작성하지 않는 경우가 많이 있다.
 > 그럼 테스트 코드에서 각 parameter 에 대한 설명을 수동으로 작성할 수 밖에 없다.  
