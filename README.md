@@ -6,11 +6,7 @@
 > 이 부분을 통일하고자 parameter 에 대한 설명을 설정할 수 있는 Module 이다.
 > - ## [SearchClass](./src/main/java/run/freshr/common/annotations/SearchClass.java)
 >> VO class 에 작성하는 Annotation  
->> - base: 공통 필드를 정의한 공통(또는 추상) class 여부
->>   여러 VO 에서 사용할 공통 parameter 를 정의한 class 에 true 로 설정
->>   기본 값은 false
->> - extend: 공통 필드를 정의한 공통(또는 추상) class 상속 여부
->>   공통 parameter 를 정의한 class 를 상속받은 VO class 에 true 로 설정
+>> - extend: true 로 설정하는 경우 SUPER 클래스를 조회하여 SUPER 클래스의 필드 정보도 추가한다.
 >>   기본 값은 true
 >> 
 > - ## [SearchComment](./src/main/java/run/freshr/common/annotations/SearchComment.java)

@@ -18,17 +18,6 @@ import java.lang.annotation.Target;
 public @interface SearchClass {
 
   /**
-   * 공통 필드를 정의한 공통(또는 추상) 클래스 여부
-   *
-   * @return the boolean
-   * @apiNote 공통 필드를 정의한 공통(또는 추상) 클래스 여부<br>
-   *          공통 필드를 정의한 클래스가 아니라면 따로 작성하지 않아도 됨
-   * @author FreshR
-   * @since 2024. 3. 26. 오후 5:24:36
-   */
-  boolean base() default false;
-
-  /**
    * 공통 필드를 정의한 공통(또는 추상) 클래스 상속 여부
    *
    * @return the boolean

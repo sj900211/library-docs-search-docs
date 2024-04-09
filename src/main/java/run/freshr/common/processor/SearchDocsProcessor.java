@@ -22,6 +22,8 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.javapoet.ClassName;
@@ -90,29 +92,6 @@ public class SearchDocsProcessor extends AbstractProcessor {
 
       processingEnv.getMessager().printMessage(NOTE, "SearchCommentProcessor.process");
 
-      List<SearchDocsData> baseFieldList = new ArrayList<>();
-
-      for (Element element : roundEnv.getRootElements()) {
-        // 클래스 유형인지 체크
-        if (element.getKind() != CLASS) {
-          continue;
-        }
-
-        SearchClass searchClass = element.getAnnotation(SearchClass.class);
-
-        if (isNull(searchClass)) {
-          continue;
-        }
-
-        if (!searchClass.base()) {
-          continue;
-        }
-
-        TypeElement typeElement = (TypeElement) element;
-
-        baseFieldList.addAll(getFieldList(typeElement));
-      }
-
       for (Element element : roundEnv.getRootElements()) {
         if (element.getKind() != CLASS) {
           continue;
@@ -124,15 +103,22 @@ public class SearchDocsProcessor extends AbstractProcessor {
           continue;
         }
 
-        if (searchClass.base()) {
-          continue;
+        List<SearchDocsData> fieldList = new ArrayList<>();
+        TypeElement typeElement = (TypeElement) element;
+
+        if (searchClass.extend()) {
+          TypeMirror superMirror = typeElement.getSuperclass();
+
+          if (!isNull(superMirror)) {
+            DeclaredType superDeclared = (DeclaredType) superMirror;
+            Element superElement = superDeclared.asElement();
+            TypeElement superTypeElement = (TypeElement) superElement;
+
+            fieldList.addAll(getFieldList(superTypeElement));
+          }
         }
 
-        TypeElement typeElement = (TypeElement) element;
-        List<SearchDocsData> fieldList = getFieldList(typeElement);
-
-        fieldList.addAll(baseFieldList);
-
+        fieldList.addAll(getFieldList(typeElement));
         List<SearchDocsData> distinctFieldList = fieldList.stream()
             .filter(distinctByKey(SearchDocsData::getField)).toList();
 
@@ -219,8 +205,7 @@ public class SearchDocsProcessor extends AbstractProcessor {
 
       // Generic ID 유형의 경우 분기 처리
       if (type.equals("ID")) {
-        SearchDocsDataBuilder docsBuilder = SearchDocsData
-            .builder()
+        SearchDocsDataBuilder docsBuilder = SearchDocsData.builder()
             .name(fieldName)
             .comment(comment)
             .format(format)
